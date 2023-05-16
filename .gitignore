@@ -1,0 +1,6 @@
+__pychache__/
+venv/
+data/*
+config/*
+!data/.gitkeep
+!config/.gitkeep
