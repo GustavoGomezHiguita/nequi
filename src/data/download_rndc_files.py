@@ -32,20 +32,40 @@ def fn_chrome_options(folder):
 
     return chrome_options
 
-def fn_list_period(periods_amount=0,just_year=False):
-    result = []
+def fn_get_downloaded_file_names(folder):
+    download_directory = os.path.join(base_directory, 'data', folder)
+    file_names = []
+    for file_name in os.listdir(download_directory):
+        file_names.append(file_name)
+    return file_names
+
+def fn_list_period(folder,periods_amount=0,just_year=False):
+    ls_periods = []
     if just_year == False:
         current_date = datetime.now()
         previous_date = current_date - timedelta(days=30)
 
         for _ in range(periods_amount):
             year_month = previous_date.strftime("%Y%m")
-            result.append(year_month)
+            ls_periods.append(year_month)
             previous_date -= timedelta(days=30)
     else:
-        result.append(ANT_YEAR)
+        ls_periods.append(ANT_YEAR)
 
-    return result
+    ls_downloaded_files = fn_get_downloaded_file_names(folder)
+
+    ls_result = []
+
+    for item in ls_downloaded_files:
+        exclude = False
+        for value in ls_periods:
+            if str(value) in item:
+                exclude = True
+                break
+        if not exclude:
+            ls_result.append(item)
+
+    return ls_result
 
 def fn_sum_check(driver):
 
@@ -71,15 +91,19 @@ def fn_download_file(folder):
 
     if folder == 'estadisticas':
         id_boton = ID_EST
-        ls_period = fn_list_period(NUM_PERIODS)
+        ls_period = fn_list_period(folder,NUM_PERIODS)
     elif folder == 'tiempos_logisticos':
         id_boton = ID_TIE
-        ls_period = fn_list_period(NUM_PERIODS)
+        ls_period = fn_list_period(folder,NUM_PERIODS)
     elif folder == 'antiguedad_vehiculos_y_combustible':
         id_boton = ID_ANT
-        ls_period = fn_list_period(just_year=True)
+        ls_period = fn_list_period(folder,just_year=True)
     else:
         return f"Error: no hay folder llamado {folder}"
+    
+    if len(ls_period)==0:
+        print (f'folder: {folder } | sin archivos por descargar')
+        return 
     
     driver = fn_create_drive(folder)
 
