@@ -70,6 +70,7 @@ CREATE TABLE Estadisticas (
   Id_municipio_origen INT NOT NULL,
   Id_municipio_destino INT NOT NULL,
   Id_naturaleza_carga INT NOT NULL,
+  Id_mercancia INT NOT NULL,
   Viajes_totales INT,
   Kilogramos DECIMAL(18,2),
   Galones DECIMAL(18,2),
@@ -87,7 +88,8 @@ CREATE TABLE Estadisticas (
   FOREIGN KEY (Id_tipo_contenedor) REFERENCES Dim_tipos_contenedor (Id),
   FOREIGN KEY (Id_municipio_origen) REFERENCES Dim_municipios (Id),
   FOREIGN KEY (Id_municipio_destino) REFERENCES Dim_municipios (Id),
-  FOREIGN KEY (Id_naturaleza_carga) REFERENCES Dim_naturalezas_carga (Id)
+  FOREIGN KEY (Id_naturaleza_carga) REFERENCES Dim_naturalezas_carga (Id),
+  FOREIGN KEY (Id_mercancia) REFERENCES Dim_mercancias (Id)
 );
 
 DROP TABLE IF EXISTS Vehiculos;
