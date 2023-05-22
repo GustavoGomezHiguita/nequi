@@ -1,0 +1,109 @@
+-- Dimensions tables
+DROP TABLE IF EXISTS Dim_configuraciones_vehiculo;
+CREATE TABLE Dim_configuraciones_vehiculo (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(50) NOT NULL UNIQUE,
+  Configuracion_vehiculo VARCHAR(100) NOT NULL
+);
+
+DROP TABLE IF EXISTS Dim_operaciones_transporte;
+CREATE TABLE Dim_operaciones_transporte (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(50) NOT NULL UNIQUE,
+  Operacion_transporte VARCHAR(100) NOT NULL
+);
+
+DROP TABLE IF EXISTS Dim_tipos_contenedor;
+CREATE TABLE Dim_tipos_contenedor (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(50) NOT NULL UNIQUE,
+  Tipo_contenedor VARCHAR(100) NOT NULL
+);
+
+DROP TABLE IF EXISTS Dim_municipios;
+CREATE TABLE Dim_municipios (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(50) NOT NULL UNIQUE,
+  Municipio VARCHAR(100) NOT NULL
+);
+
+DROP TABLE IF EXISTS Dim_mercancias;
+CREATE TABLE Dim_mercancias (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(50) NOT NULL UNIQUE,
+  Mercancia VARCHAR(100) NOT NULL
+);
+
+DROP TABLE IF EXISTS Dim_naturalezas_carga;
+CREATE TABLE Dim_naturalizas_carga (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(50) NOT NULL UNIQUE,
+  Naturaleza_carga VARCHAR(100) NOT NULL
+);
+
+-- Fact tables
+DROP TABLE IF EXISTS Tiempos_logisticos;
+CREATE TABLE Tiempos_logisticos (
+  Ano_mes INT NOT NULL,
+  Id_configuracion_vehiculo INT NOT NULL,
+  Id_naturaleza_carga INT NOT NULL,
+  Id_municipio_origen INT NOT NULL,
+  Id_municipio_destino INT NOT NULL,
+  Horas_viaje DECIMAL(10,2),
+  Horas_espera_cargue DECIMAL(10,2),
+  Horas_cargue DECIMAL(10,2),
+  Horas_espera_descargue DECIMAL(10,2),
+  Horas_descargue DECIMAL(10,2),
+  PRIMARY KEY (Ano_mes, Id_configuracion_vehiculo, Id_naturaleza_carga, Id_municipio_origen, Id_municipio_destino),
+  FOREIGN KEY (Id_configuracion_vehiculo) REFERENCES Dim_configuraciones_vehiculo (Id),
+  FOREIGN KEY (Id_naturaleza_carga) REFERENCES Dim_naturalezas_carga (Id),
+  FOREIGN KEY (Id_municipio_origen) REFERENCES Dim_municipios (Id),
+  FOREIGN KEY (Id_municipio_destino) REFERENCES Dim_municipios (Id)
+);
+
+DROP TABLE IF EXISTS Estadisticas;
+CREATE TABLE Estadisticas (
+  Ano_mes INT NOT NULL,
+  Id_configuracion_vehiculo INT NOT NULL,
+  Id_operacion_transporte INT NOT NULL,
+  Id_tipo_contenedor INT NOT NULL,
+  Id_municipio_origen INT NOT NULL,
+  Id_municipio_destino INT NOT NULL,
+  Id_naturaleza_carga INT NOT NULL,
+  Viajes_totales INT,
+  Kilogramos DECIMAL(18,2),
+  Galones DECIMAL(18,2),
+  Viajes_liquidos INT,
+  Viajes_valor_cero INT,
+  Kilometros DECIMAL(18,2),
+  Valores_pagados DECIMAL(18,2),
+  Id_municipio_intermedio INT,
+  Kilometros_regreso DECIMAL(18,2),
+  Kilogramos_regreso DECIMAL(18,2),
+  Galones_regreso DECIMAL(18,2),
+  PRIMARY KEY (Ano_mes),
+  FOREIGN KEY (Id_configuracion_vehiculo) REFERENCES Dim_configuraciones_vehiculo (Id),
+  FOREIGN KEY (Id_operacion_transporte) REFERENCES Dim_operaciones_transporte (Id),
+  FOREIGN KEY (Id_tipo_contenedor) REFERENCES Dim_tipos_contenedor (Id),
+  FOREIGN KEY (Id_municipio_origen) REFERENCES Dim_municipios (Id),
+  FOREIGN KEY (Id_municipio_destino) REFERENCES Dim_municipios (Id),
+  FOREIGN KEY (Id_naturaleza_carga) REFERENCES Dim_naturalezas_carga (Id)
+);
+
+DROP TABLE IF EXISTS Vehiculos;
+CREATE TABLE Vehiculos (
+  Ano_mes INT NOT NULL,
+  Id_configuracion_vehiculo INT NOT NULL,
+  Rango_modelo VARCHAR(50) NOT NULL,
+  Combustible VARCHAR(50) NOT NULL,
+  Placas VARCHAR(50),
+  Viajes INT,
+  Viajes_vacios INT,
+  Valor_pactado DECIMAL(18,2),
+  Kilogramos DECIMAL(18,2),
+  Galones DECIMAL(18,2),
+  Viajes_valor_cero INT,
+  Viajes_liquidos INT,
+  PRIMARY KEY (Ano_mes, Id_configuracion_vehiculo, Rango_modelo, Combustible),
+  FOREIGN KEY (Id_configuracion_vehiculo) REFERENCES Dim_configuraciones_vehiculo (Id)
+);
