@@ -3,25 +3,32 @@ import boto3
 import json
 
 
+
 def lambda_handler(event, context):
     # Obtener el nombre del bucket el archivo desde el evento
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
     
-    # Validar extensión
-    file_extension = key.split('.')[-1]
-    fn_check_extension(bucket, key, file_extension)
-    
-    # Validar periodo
-    fn_check_period(bucket, key, file_extension)
-    
-  
-    # LLAMAR AL JOB DE GLUE, PENDIENTE
-    
-    return{
-        'statusCode':200,
-        'body':'Validations passed'
-    }
+    try:
+        # Validar extensión
+        file_extension = key.split('.')[-1]
+        fn_check_extension(bucket, key, file_extension)
+        
+        # Validar periodo
+        fn_check_period(bucket, key, file_extension)
+        
+        # Invocar job de Glue:
+        fn_start_glue_job(bucket,key)
+        
+        return {
+            'statusCode': 200,
+            'body': 'Validations passed and Glue job started'
+        }
+    except Exception as e:
+        return {
+            'statusCode':500,
+            'body':f'Error: {str(e)}'
+            }
     
 def fn_check_extension(bucket, key, file_extension):
     if file_extension not in ['xlsx']:
@@ -42,3 +49,14 @@ def fn_check_period(bucket, key, file_extension):
     if period != period_avg:
         raise ValueError("Invalid period values. The period data does not match the period in the file name")
     print('Period correct.')
+    
+def fn_start_glue_job(bucket,key):
+    glue = boto3.client('glue')
+    glue_job_name = 'rndc-etl-notebook'
+    arguments = {
+        '--bucket': bucket,
+        '--key': key
+    }
+    
+    # Start the Glue job
+    glue.start_job_run(JobName=glue_job_name, Arguments=arguments)
