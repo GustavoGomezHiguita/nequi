@@ -51,7 +51,7 @@ Desde este punto en adelante se hará referencia a estos archivos de manera cole
 
 En la siguiente imagen se puede ver la interfaz de usuario para la descarga de los archivos.
 
-![Reporte públicos RNDC](pictures/reportes_rndc.jpeg)
+![Reporte públicos RNDC](images/reportes_rndc.jpeg)
 
 
 ### Obtención de los archivos:
@@ -87,7 +87,7 @@ Tener en cuenta que en el caso de las transformaciones, estas no son todas las q
 
 Para comprender y visualizar la estructura de los datos se crea el siguiente modelo entidad-relación con la ayuda de MySQL Workbench:
 
-![Modelo entidad-relación](pictures/er_model.png)
+![Modelo entidad-relación](images/er_model.png)
 
 Como se indicó anteriormente todos los campos definidos como redundates (la lista está en los notebooks) pasan a ser parte de las tablas de dimensiones del modelo. Adicionalmente se crean identificadores únicos y automincrementales para cada valor. La distribución de tablas es la siguiente:
 
@@ -110,7 +110,7 @@ El script de creación de este modelo se encuentra en la ruta scr/sql/er_model.t
 
 A continuación se ilustra el esquema planteado:
 
-![Diagrama arquitectura](pictures/diagrama_arquitectura.png)
+![Diagrama arquitectura](images/diagrama_arquitectura.png)
 
 
 La arquitectura consta de varios componentes que trabajan juntos para gestionar el flujo de archivos y el procesamiento de datos:
@@ -132,39 +132,39 @@ Para el ejemplo se muestran las capturas de pantalla de un flujo completo para u
 
 * Ejecución del script "download_rndc_files.py" para descarga archivo donde se ve el periodo a consultar y la fuente de datos relacionada al archivo.
 
-![robot](pictures/1_print_python_consulta.png)
+![robot](images/1_print_python_consulta.png)
 
 * Descarga del archivo "EstadisticasRNDC202206.xlsx" desde la página del RNDC usando selenium y almacenamiento en ruta local.
 
-![descarga1](pictures/2_descarga_archivo.png)
+![descarga1](images/2_descarga_archivo.png)
 
-![descarga2](pictures/3_archivo_folder_local.png)
+![descarga2](images/3_archivo_folder_local.png)
 
 * Ejecución del script "s3.py" para subir archivo a S3 donde se ve la fuente de datos y el archivo subido.
 
-![s3subida](pictures/4_print_python_subida_s3.png)
+![s3subida](images/4_print_python_subida_s3.png)
 
 * Bucket de S3 con el archivo.
 
-![s3bucket](pictures/5_bucket_s3.png)
+![s3bucket](images/5_bucket_s3.png)
 
 * Activación de la función Lambda con sus respectivos logs.
 
-![lambda1](pictures/6_activacion_lamba.png)
+![lambda1](images/6_activacion_lamba.png)
 
-![lambda2](pictures/7_eventos_lambda.png)
+![lambda2](images/7_eventos_lambda.png)
 
 * Monitor de Glue, con sus respectivo argumentos de entrada y logs.
 
-![glue1](pictures/8_monitor_glue_job.png)
+![glue1](images/8_monitor_glue_job.png)
 
-![glue2](pictures/9_input_glue_job.png)
+![glue2](images/9_input_glue_job.png)
 
-![glue3](pictures/10_glue_job_logs.png)
+![glue3](images/10_glue_job_logs.png)
 
 * Queries ejecutados en Redshift.
 
-![redshit](pictures/11_ejecucion_queries_redshift.png)
+![redshit](images/11_ejecucion_queries_redshift.png)
 
 
 # Fuentes:
