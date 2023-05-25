@@ -70,7 +70,6 @@ CREATE TABLE Estadisticas (
   Id_municipio_destino INT NOT NULL,
   Id_naturaleza_carga INT NOT NULL,
   Id_mercancia INT NOT NULL,
-  Id_municipio_intermedio INT NOT NULL,
   Viajes_totales INT,
   Kilogramos DECIMAL(18,2),
   Galones DECIMAL(18,2),
