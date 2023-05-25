@@ -132,31 +132,42 @@ Para el ejemplo se muestran las capturas de pantalla de un flujo completo para u
 
 * Ejecución del script "download_rndc_files.py" para descarga archivo donde se ve el periodo a consultar y la fuente de datos relacionada al archivo.
 
-![Robot python](pictures/1_print_python_consulta.png)
+![robot](pictures/1_print_python_consulta.png)
 
 * Descarga del archivo "EstadisticasRNDC202206.xlsx" desde la página del RNDC usando selenium y almacenamiento en ruta local.
 
-![Descarga](pictures/2_descarga_archivo.png)
-![Folder local](pictures/3_archivo_folder_local.png)
+![descarga1](pictures/2_descarga_archivo.png)
+
+![descarga2](pictures/3_archivo_folder_local.png)
 
 * Ejecución del script "s3.py" para subir archivo a S3 donde se ve la fuente de datos y el archivo subido.
 
-![s3 subida](pictures/4_print_python_subida_s3.png)
+![s3subida](pictures/4_print_python_subida_s3.png)
 
 * Bucket de S3 con el archivo.
 
-![s3](pictures/5_bucket_s3.png)
+![s3bucket](pictures/5_bucket_s3.png)
 
 * Activación de la función Lambda con sus respectivos logs.
 
-![s3](pictures/6_activacion_lamba.png)
-![s3](pictures/7_eventos_lambda.png)
+![lambda1](pictures/6_activacion_lamba.png)
 
-* 
+![lambda2](pictures/7_eventos_lambda.png)
 
+* Monitor de Glue, con sus respectivo argumentos de entrada y logs.
 
+![glue1](pictures/8_monitor_glue_job.png)
 
+![glue2](pictures/9_input_glue_job.png)
+
+![glue3](pictures/10_glue_job_logs.png)
+
+* Queries ejecutados en Redshift.
+
+![redshit](pictures/11_ejecucion_queries_redshift.png)
 
 
 # Fuentes:
 * Documentación Boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+* Documentación Redshift: https://docs.aws.amazon.com/redshift/latest/gsg/new-user-serverless.html
+* Documentación Glue: https://docs.aws.amazon.com/glue/latest/dg/aws-glue-api-crawler-pyspark-extensions-get-resolved-options.html
