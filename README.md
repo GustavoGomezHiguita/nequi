@@ -51,7 +51,7 @@ Desde este punto en adelante se hará referencia a estos archivos de manera cole
 
 En la siguiente imagen se puede ver la interfaz de usuario para la descarga de los archivos.
 
-![Reporte públicos RNDC](reportes_rndc.jpeg)
+![Reporte públicos RNDC](pictures/reportes_rndc.jpeg)
 
 
 ### Obtención de los archivos:
@@ -87,7 +87,7 @@ Tener en cuenta que en el caso de las transformaciones, estas no son todas las q
 
 Para comprender y visualizar la estructura de los datos se crea el siguiente modelo entidad-relación con la ayuda de MySQL Workbench:
 
-![Modelo entidad-relación](er_model.png)
+![Modelo entidad-relación](pictures/er_model.png)
 
 Como se indicó anteriormente todos los campos definidos como redundates (la lista está en los notebooks) pasan a ser parte de las tablas de dimensiones del modelo. Adicionalmente se crean identificadores únicos y automincrementales para cada valor. La distribución de tablas es la siguiente:
 
@@ -110,7 +110,7 @@ El script de creación de este modelo se encuentra en la ruta scr/sql/er_model.t
 
 A continuación se ilustra el esquema planteado:
 
-![Diagrama arquitectura](diagrama_arquitectura.png)
+![Diagrama arquitectura](pictures/diagrama_arquitectura.png)
 
 
 La arquitectura consta de varios componentes que trabajan juntos para gestionar el flujo de archivos y el procesamiento de datos:
@@ -130,9 +130,29 @@ La arquitectura consta de varios componentes que trabajan juntos para gestionar 
 
 Para el ejemplo se muestran las capturas de pantalla de un flujo completo para un archivo correspondiente a la fuente de datos de estadísticas.
 
+* Ejecución del script "download_rndc_files.py" para descarga archivo donde se ve el periodo a consultar y la fuente de datos relacionada al archivo.
 
+![Robot python](pictures/1_print_python_consulta.png)
 
+* Descarga del archivo "EstadisticasRNDC202206.xlsx" desde la página del RNDC usando selenium y almacenamiento en ruta local.
 
+![Descarga](pictures/2_descarga_archivo.png)
+![Folder local](pictures/3_archivo_folder_local.png)
+
+* Ejecución del script "s3.py" para subir archivo a S3 donde se ve la fuente de datos y el archivo subido.
+
+![s3 subida](pictures/4_print_python_subida_s3.png)
+
+* Bucket de S3 con el archivo.
+
+![s3](pictures/5_bucket_s3.png)
+
+* Activación de la función Lambda con sus respectivos logs.
+
+![s3](pictures/6_activacion_lamba.png)
+![s3](pictures/7_eventos_lambda.png)
+
+* 
 
 
 
