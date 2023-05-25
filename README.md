@@ -31,7 +31,7 @@ El proyecto planteado cubre desde la extracción de las diferentes fuentes de da
 
 ## Estructura del repositorio:
 
-blablabla
+NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO OLVIDAAAAR
 
 ## Exploración de archivos:
 
@@ -64,10 +64,10 @@ Para hacer la descarga de los archivos se crea un robot en Python usando la libr
 
 El proceso de exploración de datos se dividió en tres etapas: conocer la estructura de los archivos, identificar posibles validaciones de datos, aplicar transformación de datos. Todo lo anterior a nivel local, en notebooks, sin modificar los archivos descargados y para cada fuente de datos.
 
-Los notebooks con el detalle de las etapas y los resultados se encuentran en la ruta notebooks/. De manera general se realizan los siguientes procesos para cada fuente de datos:
+Los notebooks con el detalle de las etapas y los resultados se encuentran en la ruta notebooks/exploration_*.ipynb. De manera general se realizan los siguientes procesos para cada fuente de datos:
 
 * Validar que todos los archivos mantienen el mismo esquema.
-* Definir campos redundantes. Por ejemplo: existe el campo "COD_CONFIG_VEHICULO" (código tipo str) y "CONFIG_VEHICULO" (descripción del código) ambos haciendo referencia al mismo atributo, en este y los demás casos se opta por no tener en cuenta la descripción para temas de transformación. Nota: Como se verá más adelante estos campos pasan a ser parte de las tablas de dimensiones del modelo entidad-relación.
+* Definir campos redundantes. Por ejemplo: existe el campo "COD_CONFIG_VEHICULO" (código tipo str) y "CONFIG_VEHICULO" (descripción del código) ambos haciendo referencia al mismo atributo (configuración del vehpiculo), en este y los demás casos se opta por no tener en cuenta la descripción para temas de transformación. Nota: Como se verá más adelante estos campos pasan a ser parte de las tablas de dimensiones del modelo entidad-relación.
 * Identificar tipos de datos para cada columna de los archivos.
 * Validar que todos los archivos son del mismo tipo.
 * Validar coherencia de los datos de los archivos. En este caso se valida si los valores contenidos en el campo de periodo corresponden al periodo incluido en el nombre del archivo.
@@ -77,8 +77,64 @@ Los notebooks con el detalle de las etapas y los resultados se encuentran en la 
     * Convertir en mayúsculas todo campos tipo str.
     * Reemplazar caracteres con tilde.
     * Cambiar nombre de columnas.
+    * Agrupar datos, específicamente en el caso de tiempo logísticos donde el objetivo será tener una tabla con los tiempos promedio.
 
 Tener en cuenta que en el caso de las transformaciones, estas no son todas las que se aplican en el proceso final.
+
+## Modelo de datos:
+
+### Modelo entidad-relación:
+
+Para comprender y visualizar la estructura de los datos se crea el siguiente modelo entidad-relación con la ayuda de MySQL Workbench:
+
+![Modelo entidad-relación](er_model.png)
+
+Como se indicó anteriormente todos los campos definidos como redundates (la lista está en los notebooks) pasan a ser parte de las tablas de dimensiones del modelo. Adicionalmente se crean identificadores únicos y automincrementales para cada valor. La distribución de tablas es la siguiente:
+
+* Tablas de dimensiones:
+    * dim_municipios
+    * dim_tipos_contenedor
+    * dim_operaciones_transporte
+    * dim_mercancias
+    * dim_naturaleza_carga
+    * dim_configuraciones_vehiculo
+    
+* Tablas de hechos:
+    * tiempos_logisticos
+    * estadisticas
+    * vehiculos
+
+El script de creación de este modelo se encuentra en la ruta scr/sql/er_model.txt. Es el que se usa también para la posterior creación del modelo en Redshift.
+
+### Arquitectura
+
+A continuación se ilustra el esquema planteado:
+
+![Diagrama arquitectura](diagrama_arquitectura.png)
+
+
+La arquitectura consta de varios componentes que trabajan juntos para gestionar el flujo de archivos y el procesamiento de datos:
+
+* En primer lugar, se utiliza un script de Python para realizar la descarga de archivos desde la página del RNDC (https://rndc.mintransporte.gov.co/MenuPrincipal/tabid/204/language/es-MX/Default.aspx?returnurl=%2FDefault.aspx) a la máquina local.
+
+* Después de ser descargados, los archivos se suben a Amazon S3, un servicio de almacenamiento escalable y seguro proporcionado por Amazon Web Services (AWS). Se utiliza otro script de Python para llevar a cabo esta tarea.
+
+* Cada vez que se almacena un archivo en S3, se dispara un evento que activa una función de Lambda. Lambda es un servicio de computación sin servidor en AWS que permite ejecutar código en respuesta a eventos específicos. En este caso, Lambda se encarga de manejar el evento de almacenamiento del archivo en S3.
+
+* La función Lambda validará el archivo y su extensión para asegurarse de que cumple con los requisitos esperados. Una vez validado, la función Lambda dirigirá el flujo de procesamiento al job de Glue adecuado. AWS Glue es un servicio de extracción, transformación y carga (ETL) que simplifica y automatiza el procesamiento de datos.
+
+* El job de Glue se encarga de procesar el archivo utilizando su lógica específica. Puede realizar transformaciones, limpieza de datos y cualquier otra tarea necesaria para preparar los datos para su posterior análisis. Una vez procesados, los datos se guardarán en un modelo entidad-relación en Amazon Redshift. Redshift es un servicio de almacenamiento y análisis de datos en la nube, diseñado especialmente para cargas de trabajo de análisis de datos a gran escala.
+
+
+## Ejecución del flujo:
+
+Para el ejemplo se muestran las capturas de pantalla de un flujo completo para un archivo correspondiente a la fuente de datos de estadísticas.
+
+
+
+
+
+
 
 
 
