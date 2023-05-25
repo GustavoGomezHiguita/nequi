@@ -70,6 +70,7 @@ CREATE TABLE Estadisticas (
   Id_municipio_destino INT NOT NULL,
   Id_naturaleza_carga INT NOT NULL,
   Id_mercancia INT NOT NULL,
+  Id_municipio_intermedio INT NOT NULL,
   Viajes_totales INT,
   Kilogramos DECIMAL(18,2),
   Galones DECIMAL(18,2),
@@ -81,14 +82,16 @@ CREATE TABLE Estadisticas (
   Kilometros_regreso DECIMAL(18,2),
   Kilogramos_regreso DECIMAL(18,2),
   Galones_regreso DECIMAL(18,2),
-  PRIMARY KEY (Ano_mes,Id_configuracion_vehiculo,Id_operacion_transporte,Id_tipo_contenedor,Id_municipio_origen,Id_municipio_destino,Id_naturaleza_carga,Id_mercancia),
+  PRIMARY KEY (Ano_mes,Id_configuracion_vehiculo,Id_operacion_transporte,Id_tipo_contenedor,Id_municipio_origen,Id_municipio_destino,Id_naturaleza_carga,Id_mercancia,Id_municipio_intermedio),
   FOREIGN KEY (Id_configuracion_vehiculo) REFERENCES Dim_configuraciones_vehiculo (Id),
   FOREIGN KEY (Id_operacion_transporte) REFERENCES Dim_operaciones_transporte (Id),
   FOREIGN KEY (Id_tipo_contenedor) REFERENCES Dim_tipos_contenedor (Id),
   FOREIGN KEY (Id_municipio_origen) REFERENCES Dim_municipios (Id),
   FOREIGN KEY (Id_municipio_destino) REFERENCES Dim_municipios (Id),
   FOREIGN KEY (Id_naturaleza_carga) REFERENCES Dim_naturalezas_carga (Id),
-  FOREIGN KEY (Id_mercancia) REFERENCES Dim_mercancias (Id)
+  FOREIGN KEY (Id_mercancia) REFERENCES Dim_mercancias (Id),
+  FOREIGN KEY (Id_municipio_intermedio) REFERENCES Dim_municipios (Id),
+
 );
 
 DROP TABLE IF EXISTS Vehiculos;
