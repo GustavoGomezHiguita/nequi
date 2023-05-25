@@ -37,7 +37,6 @@ CREATE TABLE Dim_mercancias (
 DROP TABLE IF EXISTS Dim_naturalezas_carga;
 CREATE TABLE Dim_naturalezas_carga (
   Id INT IDENTITY(1,1) PRIMARY KEY,
-  Codigo VARCHAR(50) NOT NULL UNIQUE,
   Naturaleza_carga VARCHAR(100) NOT NULL
 );
 
