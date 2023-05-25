@@ -82,7 +82,7 @@ CREATE TABLE Estadisticas (
   Kilometros_regreso DECIMAL(18,2),
   Kilogramos_regreso DECIMAL(18,2),
   Galones_regreso DECIMAL(18,2),
-  PRIMARY KEY (Ano_mes),
+  PRIMARY KEY (Ano_mes,Id_configuracion_vehiculo,Id_operacion_transporte,Id_tipo_contenedor,Id_municipio_origen,Id_municipio_destino,Id_naturaleza_carga,Id_mercancia),
   FOREIGN KEY (Id_configuracion_vehiculo) REFERENCES Dim_configuraciones_vehiculo (Id),
   FOREIGN KEY (Id_operacion_transporte) REFERENCES Dim_operaciones_transporte (Id),
   FOREIGN KEY (Id_tipo_contenedor) REFERENCES Dim_tipos_contenedor (Id),
