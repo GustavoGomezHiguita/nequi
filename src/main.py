@@ -1,6 +1,6 @@
-from data.download_rndc_files import download_rndc_statistics_file
+from data.download_rndc_files import fn_download_files
 from aws.s3 import fn_upload_folder_files
 
 
-download_rndc_statistics_file()
+fn_download_files(11)
 fn_upload_folder_files()
