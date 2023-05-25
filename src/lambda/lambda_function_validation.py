@@ -18,7 +18,7 @@ def lambda_handler(event, context):
         fn_check_period(bucket, key, file_extension)
         
         # Invocar job de Glue:
-        fn_start_glue_job(bucket,key)
+        fn_start_glue_job(bucket,key,file_extension)
         
         return {
             'statusCode': 200,
@@ -50,13 +50,20 @@ def fn_check_period(bucket, key, file_extension):
         raise ValueError("Invalid period values. The period data does not match the period in the file name")
     print('Period correct.')
     
-def fn_start_glue_job(bucket,key):
-    glue = boto3.client('glue')
-    glue_job_name = 'rndc-etl-notebook'
-    arguments = {
-        '--bucket': bucket,
-        '--key': key
-    }
-    
+def fn_start_glue_job(bucket,key,file_extension):
+    if file_extension == 'xlsx':
+        glue = boto3.client('glue')
+        glue_job_name = 'rndc-etl-notebook'
+        arguments = {
+            '--bucket': bucket,
+            '--object_key': key
+        }
+    elif file_extension == 'txt':
+        glue = boto3.client('glue')
+        glue_job_name = 'rndc-etl-tiempos-notebook'
+        arguments = {
+            '--bucket': bucket,
+            '--object_key': key
+        }
     # Start the Glue job
     glue.start_job_run(JobName=glue_job_name, Arguments=arguments)
