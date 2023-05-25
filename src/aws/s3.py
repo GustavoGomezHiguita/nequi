@@ -26,6 +26,8 @@ def fn_upload_files(folder):
                 object_key = f"{folder}/{file_name}"
                 client.upload_fileobj(file, BUCKET_NAME, object_key)
                 print(f'folder: {folder} | file: {file_name} | uploaded')
+        else:
+            print(f'folder: {folder} | file: {file_name} | no need to be  uploaded again')
 
 def fn_get_bucket_file_names(bucket_name,folder):
     session = boto3.Session(aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
