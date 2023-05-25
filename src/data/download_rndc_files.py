@@ -13,7 +13,7 @@ ID_EST = "dnn_ctr678_VigiaPublico_btEstadisticas"
 ID_TIE = "dnn_ctr678_VigiaPublico_btRemesas"
 ID_ANT = "dnn_ctr678_VigiaPublico_btModeloAno"
 ANT_YEAR = '2021'
-NUM_PERIODS = 10
+#NUM_PERIODS = 10
 SLEEP_SHORT = 5
 SLEEP_LONG = 50
 base_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -56,14 +56,25 @@ def fn_list_period(folder,periods_amount=0,just_year=False):
 
     ls_result = []
 
-    for item in ls_downloaded_files:
+    # for item in ls_downloaded_files:
+    #     exclude = False
+    #     for value in ls_periods:
+    #         if str(value) in item:
+    #             exclude = True
+    #             break
+    #     if not exclude:
+    #         ls_result.append(value)
+
+    for period in ls_periods:
         exclude = False
-        for value in ls_periods:
-            if str(value) in item:
+        for file_name in ls_downloaded_files:
+            if str(period) in file_name:
                 exclude = True
                 break
         if not exclude:
-            ls_result.append(item)
+            ls_result.append(period)
+
+    print(f'folder: {folder} | periodos a consulta: {ls_result}')
 
     return ls_result
 
@@ -87,14 +98,14 @@ def fn_create_drive(folder):
     driver.maximize_window()
     return driver
 
-def fn_download_file(folder):
+def fn_download_file(folder,number_periods):
 
     if folder == 'estadisticas':
         id_boton = ID_EST
-        ls_period = fn_list_period(folder,NUM_PERIODS)
+        ls_period = fn_list_period(folder,number_periods)
     elif folder == 'tiempos_logisticos':
         id_boton = ID_TIE
-        ls_period = fn_list_period(folder,NUM_PERIODS)
+        ls_period = fn_list_period(folder,number_periods)
     elif folder == 'antiguedad_vehiculos_y_combustible':
         id_boton = ID_ANT
         ls_period = fn_list_period(folder,just_year=True)
@@ -135,11 +146,11 @@ def fn_download_file(folder):
 
     driver.quit()
 
-def fn_download_files():
+def fn_download_files(number_periods:int):
 
-    fn_download_file('estadisticas')
-    fn_download_file('tiempos_logisticos')
-    fn_download_file('antiguedad_vehiculos_y_combustible')
+    fn_download_file('estadisticas',number_periods)
+    fn_download_file('tiempos_logisticos',number_periods)
+    fn_download_file('antiguedad_vehiculos_y_combustible',0)
 
 if __name__=='__main__':
-    fn_download_files()
+    fn_download_files(11)
