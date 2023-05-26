@@ -58,7 +58,7 @@ def fn_start_glue_job(bucket,key,file_extension):
         arguments = {
             '--bucket': bucket,
             '--object_key': key,
-            '--additional-python-modules':psycopg2-binary==2.9.6
+            '--additional-python-modules':'psycopg2-binary==2.9.6'
         }
     elif file_extension == 'txt':
         glue = boto3.client('glue')
@@ -66,7 +66,7 @@ def fn_start_glue_job(bucket,key,file_extension):
         arguments = {
             '--bucket': bucket,
             '--object_key': key,
-            '--additional-python-modules':psycopg2-binary==2.9.6
+            '--additional-python-modules':'psycopg2-binary==2.9.6'
         }
     # Start the Glue job
     glue.start_job_run(JobName=glue_job_name, Arguments=arguments)
