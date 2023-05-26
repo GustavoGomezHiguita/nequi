@@ -177,6 +177,8 @@ Para el ejemplo se muestran las capturas de pantalla de un flujo completo para u
 
 ![redshit](images/11_ejecucion_queries_redshift.png)
 
+# Pendientes:
+* Cargar datos completos en las tablas de hechos.
 
 # Fuentes:
 * Documentación Boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
