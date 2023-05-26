@@ -29,10 +29,6 @@ El proyecto planteado cubre desde la extracción de las diferentes fuentes de da
 * Tipos de flota.
 * Corredores desbalanceados (con diferencias sustanciales entre la carga de entrada y la carga de salida).
 
-## Estructura del repositorio:
-
-NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO OLVIDAAAAR
-
 ## Exploración de archivos:
 
 ### Contexto de los archivos:
@@ -124,6 +120,21 @@ La arquitectura consta de varios componentes que trabajan juntos para gestionar 
 * La función Lambda validará el archivo y su extensión para asegurarse de que cumple con los requisitos esperados. Una vez validado, la función Lambda dirigirá el flujo de procesamiento al job de Glue adecuado. AWS Glue es un servicio de extracción, transformación y carga (ETL) que simplifica y automatiza el procesamiento de datos.
 
 * El job de Glue se encarga de procesar el archivo utilizando su lógica específica. Puede realizar transformaciones, limpieza de datos y cualquier otra tarea necesaria para preparar los datos para su posterior análisis. Una vez procesados, los datos se guardarán en un modelo entidad-relación en Amazon Redshift. Redshift es un servicio de almacenamiento y análisis de datos en la nube, diseñado especialmente para cargas de trabajo de análisis de datos a gran escala.
+
+## Estructura del repositorio:
+
+![repositorio](images/repositorio.png)
+
+* drivers: aquí se encuentra el archivo "chromedriver.exe" con el driver de chrome necesario para la ejecución del bot de Python. Cabe aclarar que su versión depende de la versión de Google Chrome usada en la máquina donde se vaya a ejecutar el script.
+* images: aquí se guardan las imágenes que se ven en el README.md.
+* notebooks: aquí se encuentran los notebooks de exploración y los jobs de Glue (su nombre comienza por "rndc-etl").
+* src: aquí están las siguientes subcarpetas:
+    * aws: contiene el script "s3.py" con la función para leer el nombre de los archivos subidos a S3 y la función para cargar archivos.
+    * data: contiene el script "download_rndc_files.py" con las funciones para el funcionamiento del robot.
+    * lambda: contiene el script "lambda_function_validation.py" que es el usado en el servicio de Lambda para validar el archivo y definir el job de Glue a ejecutar.
+    * sql: contiene el archivo "er_model.txt" con el query para la creación del modelo entidad-relación en Redshift.
+    Adicionalmente contiene el archivo main.py que se encarga de orquestar la descarga de los archivos y su almacenamiento en s3.
+* requirements: contiene las librerías utilizadas.
 
 
 ## Ejecución del flujo:
