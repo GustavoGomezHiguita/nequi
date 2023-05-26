@@ -15,7 +15,8 @@ def lambda_handler(event, context):
         fn_check_extension(bucket, key, file_extension)
         
         # Validar periodo
-        fn_check_period(bucket, key, file_extension)
+        if file_extension in ['xlsx']:
+            fn_check_period(bucket, key, file_extension)
         
         # Invocar job de Glue:
         fn_start_glue_job(bucket,key,file_extension)
@@ -56,14 +57,16 @@ def fn_start_glue_job(bucket,key,file_extension):
         glue_job_name = 'rndc-etl-notebook'
         arguments = {
             '--bucket': bucket,
-            '--object_key': key
+            '--object_key': key,
+            '--additional-python-modules':psycopg2-binary==2.9.6
         }
     elif file_extension == 'txt':
         glue = boto3.client('glue')
         glue_job_name = 'rndc-etl-tiempos-notebook'
         arguments = {
             '--bucket': bucket,
-            '--object_key': key
+            '--object_key': key,
+            '--additional-python-modules':psycopg2-binary==2.9.6
         }
     # Start the Glue job
     glue.start_job_run(JobName=glue_job_name, Arguments=arguments)
