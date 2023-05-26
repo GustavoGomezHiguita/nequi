@@ -127,7 +127,7 @@ La arquitectura consta de varios componentes que trabajan juntos para gestionar 
 
 * drivers: aquí se encuentra el archivo "chromedriver.exe" con el driver de chrome necesario para la ejecución del bot de Python. Cabe aclarar que su versión depende de la versión de Google Chrome usada en la máquina donde se vaya a ejecutar el script.
 * images: aquí se guardan las imágenes que se ven en el README.md.
-* notebooks: aquí se encuentran los notebooks de exploración y los jobs de Glue (su nombre comienza por "rndc-etl").
+* notebooks: aquí se encuentran los notebooks de exploración y los jobs de Glue (su nombre comienza por "rndc-etl"). Estos últimos se encargan de hacer la lectura desde s3 del archivo que dispara el evento, lo limpia y transforma, retirando los campos referenetes al código y su descripción para cambiarlos por su respectivo id en las tablas de dimensiones. Los pasos son detallados en el respectivo notebook.
 * src: aquí están las siguientes subcarpetas:
     * aws: contiene el script "s3.py" con la función para leer el nombre de los archivos subidos a S3 y la función para cargar archivos.
     * data: contiene el script "download_rndc_files.py" con las funciones para el funcionamiento del robot.
