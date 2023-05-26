@@ -177,6 +177,8 @@ Para el ejemplo se muestran las capturas de pantalla de un flujo completo para u
 
 ![redshit](images/11_ejecucion_queries_redshift.png)
 
+Nota: la prueba se hizo sin la carga de datos en las tablas de hechos.
+
 # Pendientes:
 * Cargar datos completos en las tablas de hechos.
 
